@@ -24,7 +24,7 @@ export default class Basebot {
   }
 
   onMessage() {
-
+    console.log('firing from parent');
   }
 
 }

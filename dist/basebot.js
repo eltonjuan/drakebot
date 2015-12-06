@@ -41,7 +41,9 @@ var Basebot = (function () {
     value: function onError() {}
   }, {
     key: 'onMessage',
-    value: function onMessage() {}
+    value: function onMessage() {
+      console.log('firing from parent');
+    }
   }]);
 
   return Basebot;
