@@ -21,6 +21,7 @@ export default class Drakebot extends Basebot {
     const text = message.text;
     this.msg = message;
     this.speak();
+
     if (text.substr(0,3) === 'add') {
       const knowledge = text.substr(3, text.length).trim();
       if (knowledge) {
@@ -38,8 +39,11 @@ export default class Drakebot extends Basebot {
   }
 
   speak() {
-    const rand = sample(this.drakespeak);
-    this.sendMessage(rand);
+    const rand = sample(this.drakespeak).body;
+    const cid = sample(this.getChannels()).id;
+    const channel = this.getChannel(cid);
+    console.log(`drake speaking in: ${channel.name}. says: ${rand}`);
+    channel.send(rand);
   }
-  
+
 }

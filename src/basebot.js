@@ -15,6 +15,14 @@ export default class Basebot {
     this.slack.login();
   }
 
+  getChannels() {
+    return this.slack.channels;
+  }
+
+  getChannel(id) {
+    return this.slack.getChannelGroupOrDMByID(id);
+  }
+
   onOpen() {
     console.log(`Connected to ${this.slack.team.name} as: ${this.slack.self.name}`);
   }
@@ -24,11 +32,13 @@ export default class Basebot {
   }
 
   sendMessage(message, channel = this.slack.channel) {
-    
+
   }
 
   onMessage() {
-    console.log('firing from parent');
+    
   }
+
+
 
 }
