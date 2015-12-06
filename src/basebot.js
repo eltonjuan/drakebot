@@ -23,6 +23,10 @@ export default class Basebot {
 
   }
 
+  sendMessage(message, channel = this.slack.channel) {
+    
+  }
+
   onMessage() {
     console.log('firing from parent');
   }
