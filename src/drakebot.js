@@ -4,23 +4,32 @@ import Basebot from './basebot';
 import sample from 'lodash.sample';
 import DrakeSpeak from './models/DrakeSpeak';
 
-
 export default class Drakebot extends Basebot {
 
   constructor(token) {
     super(token);
     mongoose.connect('mongodb://localhost/drakebot');
-    this.recall();
+    this.boot();
   }
 
-  async recall() {
+  async boot() {
     this.drakespeak = await DrakeSpeak.find();
+    this.startTimer();
+    console.log('done booting')
+
+  }
+
+  startTimer() {
+    process.nextTick(() => {
+      setInterval(() => {
+        this.preach();
+      }, 5000);
+    });
   }
 
   onMessage(message) {
     const text = message.text;
     this.msg = message;
-    this.speak();
 
     if (text.substr(0,3) === 'add') {
       const knowledge = text.substr(3, text.length).trim();
@@ -38,12 +47,22 @@ export default class Drakebot extends Basebot {
     });
   }
 
-  speak() {
+  preach() {
     const rand = sample(this.drakespeak).body;
     const cid = sample(this.getChannels()).id;
     const channel = this.getChannel(cid);
+    this.joinChannel(channel);
     console.log(`drake speaking in: ${channel.name}. says: ${rand}`);
     channel.send(rand);
+    this.leaveChannel(channel);
+  }
+
+  joinChannel(channel) {
+    this.slack.joinChannel(channel.name);
+  }
+
+  leaveChannel(channel) {
+    this.slack._apiCall('channels.leave', channel.id);
   }
 
 }
