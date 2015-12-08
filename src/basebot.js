@@ -36,7 +36,7 @@ export default class Basebot {
   }
 
   onMessage() {
-    
+
   }
 
 

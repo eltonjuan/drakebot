@@ -1,4 +1,4 @@
-import {SLACK_ACCESS_TOKEN} from './config';
+import {SLACK_ACCESS_TOKEN, WHITELIST, INTERVAL} from './config';
 import mongoose from 'mongoose';
 import Basebot from './basebot';
 import sample from 'lodash.sample';
@@ -12,18 +12,22 @@ export default class Drakebot extends Basebot {
     this.boot();
   }
 
-  async boot() {
-    this.drakespeak = await DrakeSpeak.find();
+  boot() {
+    this.sync();
     this.startTimer();
     console.log('done booting')
+  }
 
+  async sync() {
+    this.drakespeak = await DrakeSpeak.find();
   }
 
   startTimer() {
+    console.info(`Starting timer... drake speaks every ${INTERVAL} seconds.`);
     process.nextTick(() => {
       setInterval(() => {
         this.preach();
-      }, 5000);
+      }, INTERVAL * 1000);
     });
   }
 
@@ -43,8 +47,23 @@ export default class Drakebot extends Basebot {
     const knowledge = new DrakeSpeak({body: words, userID: this.msg.user});
     knowledge.save(err => {
       if (err) throw err;
+      this.sync();
       console.info('Added knowledge: ', knowledge);
     });
+  }
+
+  getChannels() {
+    let channels = this.slack.channels;
+    if (WHITELIST) {
+      WHITELIST.forEach((name) => {
+        Object.keys(channels).forEach((key) => {
+          if (channels[key].name !== name) {
+            delete channels[key];
+          }
+        });
+      });
+    }
+    return channels;
   }
 
   preach() {
@@ -54,15 +73,10 @@ export default class Drakebot extends Basebot {
     this.joinChannel(channel);
     console.log(`drake speaking in: ${channel.name}. says: ${rand}`);
     channel.send(rand);
-    this.leaveChannel(channel);
   }
 
   joinChannel(channel) {
     this.slack.joinChannel(channel.name);
-  }
-
-  leaveChannel(channel) {
-    this.slack._apiCall('channels.leave', channel.id);
   }
 
 }
