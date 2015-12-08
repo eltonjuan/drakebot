@@ -4,4 +4,6 @@ export const SLACK_ACCESS_TOKEN = 'xoxb-15811528817-4WTmBtHjE3SlctJjcSojyszk';
 // export const WHITELIST = ['general'];
 
 // specify interval in seconds
-export const INTERVAL = 5;
+export const INTERVAL = 60;
+
+export const VIEWER_ENABLED = true;
