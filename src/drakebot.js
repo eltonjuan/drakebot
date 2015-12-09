@@ -15,7 +15,6 @@ export default class Drakebot extends Basebot {
   boot() {
     this.sync();
     this.startTimer();
-    console.log('done booting')
   }
 
   async sync() {
