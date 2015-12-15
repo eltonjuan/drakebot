@@ -1,13 +1,22 @@
 import express from 'express';
+import {dust} from 'adaro';
 import render from './admin';
-
+import path from 'path';
 export default function() {
   const app = express();
   const port = 8080;
 
+  app.engine('dust', dust());
+  app.set('view engine', 'dust');
+  app.set('views', path.join(__dirname, 'templates'));
+
+
+
   app.get('/', (req, res) => {
     render().then((markup) => {
-      res.send(markup);
+      res.render('index', {
+        markup: markup
+      });
     }).catch((err) => {
       console.error(err);
     });
