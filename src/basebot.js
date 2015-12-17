@@ -5,14 +5,17 @@ export default class BaseBot {
 
   constructor(token) {
     this.controller = Botkit.slackbot(DEBUG);
-    this.controller.spawn({
+    this.bot = this.controller.spawn({
       token
     }).startRTM();
-    this.controller.hears('hello', 'direct_message, direct_mention, mention', (bot, msg) => {
-      bot.reply(msg, "hello yourself");
+    this.channels = this.bot.api.channels.list({}, (err, res) => {
+      if (err) throw err;
+      this.channels = res.channels;
     });
   }
 
-
+  getChannels() {
+    return this.channels;
+  }
 
 }

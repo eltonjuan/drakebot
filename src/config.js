@@ -4,7 +4,7 @@ export const DEBUG = true;
 // export const WHITELIST = ['general'];
 
 // specify interval in seconds
-export const INTERVAL = 60;
+export const INTERVAL = 5;
 
 export const ADMIN = false;
 export const ADMIN_PORT = 8080;
