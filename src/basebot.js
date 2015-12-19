@@ -4,7 +4,9 @@ import Botkit from 'botkit';
 export default class BaseBot {
 
   constructor(token) {
-    this.controller = Botkit.slackbot(DEBUG);
+    this.controller = Botkit.slackbot({
+      debug: DEBUG
+    });
     this.bot = this.controller.spawn({
       token
     }).startRTM();
@@ -22,6 +24,12 @@ export default class BaseBot {
 
   getChannels() {
     return this.channels;
+  }
+
+  getChannelsForUser() {
+    return this.channels.filter((channel) => {
+      return channel.is_member;
+    });
   }
 
   listUsers() {
