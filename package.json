@@ -20,6 +20,7 @@
   "dependencies": {
     "adaro": "^1.0.1",
     "babel-preset-react": "^6.3.13",
+    "botkit": "0.0.4",
     "express": "^4.13.3",
     "fixed-data-table": "^0.6.0",
     "lodash.sample": "^3.1.0",

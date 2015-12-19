@@ -1,44 +1,31 @@
-import Slack from 'slack-client';
+import {DEBUG} from './config';
+import Botkit from 'botkit';
 
-export default class Basebot {
+export default class BaseBot {
 
   constructor(token) {
-    this.token = token;
-    this.connect();
-  }
-
-  connect() {
-    this.slack = new Slack(this.token, true, true);
-    this.slack.on('open', this.onOpen.bind(this));
-    this.slack.on('error', this.onError.bind(this));
-    this.slack.on('message', this.onMessage.bind(this));
-    this.slack.login();
+    this.controller = Botkit.slackbot(DEBUG);
+    this.bot = this.controller.spawn({
+      token
+    }).startRTM();
+    this.channels = this.bot.api.channels.list({}, (err, res) => {
+      if (err) throw err;
+      this.channels = res.channels;
+    });
+    this.users = this.bot.api.users.list({}, (err, res) => {
+      if (err) throw err;
+      this.users = res.members.filter((user)=>{
+        return !user.is_bot;
+      });
+    });
   }
 
   getChannels() {
-    return this.slack.channels;
+    return this.channels;
   }
 
-  getChannel(id) {
-    return this.slack.getChannelGroupOrDMByID(id);
+  listUsers() {
+    return this.users;
   }
-
-  onOpen() {
-    console.log(`Connected to ${this.slack.team.name} as: ${this.slack.self.name}`);
-  }
-
-  onError() {
-
-  }
-
-  sendMessage(message, channel = this.slack.channel) {
-
-  }
-
-  onMessage() {
-
-  }
-
-
 
 }
