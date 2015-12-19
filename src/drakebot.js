@@ -38,17 +38,22 @@ export default class Drakebot extends Basebot {
 
   async sendMessage(type, message) {
     if (type === 'channel') {
-      const channel = sample(this.getChannels());
+      const channel = sample(this.getChannelsForUser());
       const channelId = channel.id;
-      this.bot.say({
+      this.bot.api.chat.postMessage({
         channel: channelId,
-        message
+        as_user: true,
+        text: message
       });
-
     } else {
       const user = sample(this.listUsers());
-      this.bot.say({
-
+      const channel = this.bot.api.im.open({user: user.id}, (err, res) => {
+        if (err) console.log(err);
+        this.bot.api.chat.postMessage({
+          channel: res.channel.id,
+          as_user: true,
+          text: message
+        });
       });
     }
   }
