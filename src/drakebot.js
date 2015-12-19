@@ -31,8 +31,26 @@ export default class Drakebot extends Basebot {
   }
 
   preach() {
-    const rand = sample(this.drakespeak).body;
+    const text = sample(this.drakespeak).body;
+    const dmOrChannel = sample(['dm', 'channel']);
+    this.sendMessage(dmOrChannel, text);
+  }
 
+  async sendMessage(type, message) {
+    if (type === 'channel') {
+      const channel = sample(this.getChannels());
+      const channelId = channel.id;
+      this.bot.say({
+        channel: channelId,
+        message
+      });
+
+    } else {
+      const user = sample(this.listUsers());
+      this.bot.say({
+        
+      });
+    }
   }
     // preach() {
     //   const rand = sample(this.drakespeak).body;

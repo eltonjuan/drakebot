@@ -12,10 +12,20 @@ export default class BaseBot {
       if (err) throw err;
       this.channels = res.channels;
     });
+    this.users = this.bot.api.users.list({}, (err, res) => {
+      if (err) throw err;
+      this.users = res.members.filter((user)=>{
+        return !user.is_bot;
+      });
+    });
   }
 
   getChannels() {
     return this.channels;
+  }
+
+  listUsers() {
+    return this.users;
   }
 
 }
