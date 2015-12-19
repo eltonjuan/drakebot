@@ -1,4 +1,4 @@
-import {SLACK_ACCESS_TOKEN, INTERVAL} from './config';
+import { INTERVAL } from './config';
 import mongoose from 'mongoose';
 import Basebot from './basebot';
 import sample from 'lodash.sample';
@@ -43,16 +43,18 @@ export default class Drakebot extends Basebot {
       this.bot.api.chat.postMessage({
         channel: channelId,
         as_user: true,
-        text: message
+        text: message,
       });
     } else {
       const user = sample(this.listUsers());
-      const channel = this.bot.api.im.open({user: user.id}, (err, res) => {
-        if (err) console.log(err);
+      this.bot.api.im.open({ user: user.id }, (err, res) => {
+        if (err) {
+          console.log(err);
+        }
         this.bot.api.chat.postMessage({
           channel: res.channel.id,
           as_user: true,
-          text: message
+          text: message,
         });
       });
     }

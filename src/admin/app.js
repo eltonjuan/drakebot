@@ -1,8 +1,8 @@
 import express from 'express';
-import {dust} from 'adaro';
+import { dust } from 'adaro';
 import render from './admin';
 import path from 'path';
-export default function() {
+export default function () {
   const app = express();
   const port = 8080;
 
@@ -10,23 +10,19 @@ export default function() {
   app.set('view engine', 'dust');
   app.set('views', path.join(__dirname, 'templates'));
 
-
-
   app.get('/', (req, res) => {
-    render().then((markup) => {
+    render().then(markup => {
       res.render('index', {
-        markup: markup
+        markup,
       });
-    }).catch((err) => {
+    }).catch(err => {
       console.error(err);
     });
   });
 
   const server = app.listen(port, () => {
     const host = server.address().address;
-    const port = server.address().port;
-
-    console.log(server.address())
-    console.log(`Admin app listening at http://${host}:${port}`)
+    console.log(server.address());
+    console.log(`Admin app listening at http://${host}:${port}`);
   });
 }

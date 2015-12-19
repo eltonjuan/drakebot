@@ -1,24 +1,26 @@
-import {DEBUG} from './config';
+import { DEBUG } from './config';
 import Botkit from 'botkit';
 
 export default class BaseBot {
 
   constructor(token) {
     this.controller = Botkit.slackbot({
-      debug: DEBUG
+      debug: DEBUG,
     });
     this.bot = this.controller.spawn({
-      token
+      token,
     }).startRTM();
     this.channels = this.bot.api.channels.list({}, (err, res) => {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       this.channels = res.channels;
     });
     this.users = this.bot.api.users.list({}, (err, res) => {
-      if (err) throw err;
-      this.users = res.members.filter((user)=>{
-        return !user.is_bot;
-      });
+      if (err) {
+        throw err;
+      }
+      this.users = res.members.filter(user => !user.is_bot);
     });
   }
 
@@ -27,9 +29,7 @@ export default class BaseBot {
   }
 
   getChannelsForUser() {
-    return this.channels.filter((channel) => {
-      return channel.is_member;
-    });
+    return this.channels.filter(channel => channel.is_member);
   }
 
   listUsers() {
