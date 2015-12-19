@@ -34,6 +34,7 @@ export default class Drakebot extends Basebot {
     const text = sample(this.drakespeak).body;
     const dmOrChannel = sample(['dm', 'channel']);
     this.sendMessage(dmOrChannel, text);
+    console.log('valid users', this.listUsers());
   }
 
   async sendMessage(type, message) {

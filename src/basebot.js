@@ -1,4 +1,4 @@
-import { DEBUG } from './config';
+import { DEBUG, USER_WHITELIST, CHANNEL_WHITELIST } from './config';
 import Botkit from 'botkit';
 
 export default class BaseBot {
@@ -15,12 +15,18 @@ export default class BaseBot {
         throw err;
       }
       this.channels = res.channels;
+      if (CHANNEL_WHITELIST) {
+        this.channels = this.channels.filter(channel => CHANNEL_WHITELIST.includes(channel.name));
+      }
     });
     this.users = this.bot.api.users.list({}, (err, res) => {
       if (err) {
         throw err;
       }
       this.users = res.members.filter(user => !user.is_bot);
+      if (USER_WHITELIST) {
+        this.users = this.users.filter(user => USER_WHITELIST.includes(user.name));
+      }
     });
   }
 
@@ -35,5 +41,4 @@ export default class BaseBot {
   listUsers() {
     return this.users;
   }
-
 }

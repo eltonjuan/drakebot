@@ -1,7 +1,8 @@
 export const SLACK_ACCESS_TOKEN = 'xoxb-15811528817-4WTmBtHjE3SlctJjcSojyszk';
-export const DEBUG = true;
+export const DEBUG = false;
+
 // an array of channel names in which drakebot is allowed to speak
-// export const WHITELIST = ['general'];
+export const USER_WHITELIST = ['jambot-master'];
 
 // specify interval in seconds
 export const INTERVAL = 5;
