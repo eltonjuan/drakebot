@@ -1,6 +1,6 @@
-import { INTERVAL } from './config';
 import mongoose from 'mongoose';
 import Basebot from './basebot';
+import Timer from './timer';
 import sample from 'lodash.sample';
 import DrakeSpeak from './models/DrakeSpeak';
 
@@ -14,27 +14,17 @@ export default class Drakebot extends Basebot {
 
   boot() {
     this.sync();
-    this.startTimer();
+    this.timer = new Timer(this.preach.bind(this));
   }
 
   async sync() {
     this.drakespeak = await DrakeSpeak.find();
   }
 
-  startTimer() {
-    console.info(`DRAKEBOT: Starting timer... Drake speaking every ${INTERVAL} seconds.`);
-    process.nextTick(() => {
-      setInterval(() => {
-        this.preach();
-      }, INTERVAL * 1000);
-    });
-  }
-
   preach() {
     const text = sample(this.drakespeak).body;
     const dmOrChannel = sample(['dm', 'channel']);
     this.sendMessage(dmOrChannel, text);
-    console.log('valid users', this.listUsers());
   }
 
   async sendMessage(type, message) {
@@ -46,6 +36,7 @@ export default class Drakebot extends Basebot {
         as_user: true,
         text: message,
       });
+      console.log(`CHANNEL (${channel.name}): Drakebot says "${message}"`);
     } else {
       const user = sample(this.listUsers());
       this.bot.api.im.open({ user: user.id }, (err, res) => {
@@ -57,6 +48,7 @@ export default class Drakebot extends Basebot {
           as_user: true,
           text: message,
         });
+        console.log(`DM (${user.name}): Drakebot says "${message}"`);
       });
     }
   }

@@ -4,6 +4,10 @@ export const DEBUG = false;
 // an array of channel names in which drakebot is allowed to speak
 export const USER_WHITELIST = ['jambot-master'];
 
+// valid values are 'random' or 'fixed'
+export const TIMER_MODE = 'fixed';
+export const TIMES_PER_DAY = 10;
+
 // specify interval in seconds
 export const INTERVAL = 5;
 
