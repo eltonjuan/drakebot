@@ -22,7 +22,7 @@ export default class Drakebot extends Basebot {
   }
 
   preach() {
-    const text = sample(this.drakespeak).body;
+    const text = sample(this.drakespeak).quote;
     const dmOrChannel = sample(['dm', 'channel']);
     this.sendMessage(dmOrChannel, text);
   }

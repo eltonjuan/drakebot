@@ -5,8 +5,8 @@ export const DEBUG = false;
 export const USER_WHITELIST = ['jambot-master'];
 
 // valid values are 'random' or 'fixed'
-export const TIMER_MODE = 'fixed';
-export const TIMES_PER_DAY = 10;
+export const TIMER_MODE = 'random';
+export const TIMES_PER_DAY = 5;
 
 // specify interval in seconds
 export const INTERVAL = 5;
